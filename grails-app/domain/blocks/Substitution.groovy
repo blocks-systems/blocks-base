@@ -1,7 +1,7 @@
 package blocks
 
 import blocks.auth.User
-import org.grails.databinding.BindingFormat
+import grails.databinding.BindingFormat
 
 class Substitution extends BaseEntity {
 

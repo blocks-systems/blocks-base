@@ -48,11 +48,11 @@ Brief summary/description of the plugin.
     }
 
     void doWithApplicationContext() {
-            grailsApplication.mainContext.eventTriggeringInterceptor.datastores.each { k, datastore ->
+            /*grailsApplication.mainContext.eventTriggeringInterceptor.datastores.each { k, datastore ->
             def signatureListener = new SignatureListener(datastore)
             signatureListener.counterService = applicationContext.counterService
             applicationContext.addApplicationListener(signatureListener)
-        }
+        }*/
     }
 
     void onChange(Map<String, Object> event) {

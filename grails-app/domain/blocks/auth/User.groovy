@@ -2,7 +2,7 @@ package blocks.auth
 
 import blocks.BaseEntity
 import org.apache.commons.lang3.StringUtils
-import org.grails.databinding.BindingFormat
+import grails.databinding.BindingFormat
 import org.springframework.security.core.GrantedAuthority
 
 class User extends BaseEntity {
