@@ -1,6 +1,7 @@
 package blocks.auth
 
 import blocks.BaseEntity
+import blocks.organization.OrgUnit
 import org.apache.commons.lang3.StringUtils
 import grails.databinding.BindingFormat
 import org.springframework.security.core.GrantedAuthority
@@ -47,11 +48,13 @@ class User extends BaseEntity {
         lastSuccessfulAttempt nullable: true
         groups nullable: true
         roles nullable: true
+        orgUnits nullable: true
     }
 
     static hasMany = [
             groups: Role,
-            roles: Permission
+            roles: Permission,
+            orgUnits: OrgUnit
     ]
 
     static mapping = {
