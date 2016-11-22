@@ -3,6 +3,7 @@
  */
 package blocks.helpers
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
 
 /**
