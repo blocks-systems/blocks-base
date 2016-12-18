@@ -1,6 +1,7 @@
 package blocks
 
 import blocks.auth.User
+import blocks.traits.BaseEntityTrait
 
 /**
  * Created by floyd on 15.11.15.
@@ -9,7 +10,7 @@ import blocks.auth.User
 import grails.plugin.springsecurity.userdetails.GrailsUser
 import org.springframework.security.core.context.SecurityContextHolder
 
-abstract class BaseEntity {
+abstract class BaseEntity implements BaseEntityTrait {
 
     String createdBy = 'SYSTEM'
     Date createdAt = new Date()
@@ -34,33 +35,21 @@ abstract class BaseEntity {
 
     def beforeInsert() {
         createdAt = new Date()
-        if (SecurityContextHolder?.context?.authentication?.principal != null) {
-            GrailsUser guser = (GrailsUser) SecurityContextHolder.context.authentication.principal
-            createdBy = guser.username
-        }
+        createdBy = getActorUserName()
     }
 
     def beforeUpdate() {
         editedAt = new Date()
-        if (SecurityContextHolder?.context?.authentication?.principal != null) {
-            GrailsUser guser = (GrailsUser) SecurityContextHolder.context.authentication.principal
-            editedBy = guser.username
-        }
+        editedBy = getActorUserName()
     }
 
     def onSave = {
         createdAt = new Date()
-        if (SecurityContextHolder?.context?.authentication?.principal != null) {
-            GrailsUser user = (GrailsUser) SecurityContextHolder.context.authentication.principal
-            createdBy = user.username
-        }
+        createdBy = getActorUserName()
     }
 
     def onChange = {
         editedAt = new Date()
-        if (SecurityContextHolder?.context?.authentication?.principal != null) {
-            GrailsUser user = (GrailsUser) SecurityContextHolder.context.authentication.principal
-            editedBy = user.username
-        }
+        editedBy = getActorUserName()
     }
 }
