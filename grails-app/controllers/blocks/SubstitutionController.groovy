@@ -1,8 +1,11 @@
 package blocks
 
-import grails.transaction.Transactional;
+import grails.transaction.Transactional
+import org.apache.commons.logging.LogFactory;
 
 class SubstitutionController {
+
+    private static final log = LogFactory.getLog(this)
 
     SubstitutionService substitutionService
 
@@ -12,34 +15,21 @@ class SubstitutionController {
     }
 
     def show(Substitution substitutionInstance) {
-        println "show, ID:"
-        println substitutionInstance.id
         respond substitutionInstance
-        println "end show, ID:"
     }
 
     def create() {
-        println "create"
         respond new Substitution(params)
-        println "end create, ID:"
     }
 
     @Transactional
     def save(Substitution substitutionInstance) {
-        println "saving...:"
-        println "saving, ID:"
-        println substitutionInstance.id
-        println  substitutionInstance
-        println "saved?"
         if (substitutionInstance == null) {
-            println "substitutionInstance is null"
             notFound()
             return
         }
 
         if (substitutionInstance.hasErrors()) {
-            println "substitutionInstance has errors"
-            println substitutionInstance.errors
             respond substitutionInstance.errors, view:'create'
             return
         }
@@ -56,16 +46,11 @@ class SubstitutionController {
     }
 
     def edit(Substitution substitutionInstance) {
-        println "edit, ID:"
-        println substitutionInstance.id
         respond substitutionInstance
-        println "end edit"
     }
 
     @Transactional
     def update(Substitution substitutionInstance) {
-        println "uodate, ID:"
-        println substitutionInstance.id
         if (substitutionInstance == null) {
             notFound()
             return
@@ -85,13 +70,10 @@ class SubstitutionController {
             }
             '*'{ respond substitutionInstance, [status: OK] }
         }
-        println "end show"
     }
 
     @Transactional
     def delete(Substitution substitutionInstance) {
-        println " DELETE substitutionInstance, ID:"
-        println substitutionInstance.id
         if (substitutionInstance == null) {
             println "DELETE substitutionInstance is null"
             notFound()
