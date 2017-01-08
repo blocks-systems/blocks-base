@@ -9,12 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 class SubstitutionService {
 
     static Integer count
-    def grailsApplication
-
-
-    def serviceMethod() {
-
-    }
 
     List<Substitution> getCurrentUserSubstitutions(Map params) {
         List<Substitution> substitutions = new ArrayList<Substitution>()
@@ -22,8 +16,6 @@ class SubstitutionService {
         User user = User.findById(ud.id)
         substitutions = Substitution.findAllByReplacedPerson(user, params)
         count = substitutions.size()
-        println substitutions.size()
-        println substitutions
         return substitutions
     }
 
@@ -32,8 +24,6 @@ class SubstitutionService {
         User user = User.findByUsername(username)
         substitutions = Substitution.findAllByReplacedPerson(user, params)
         count = substitutions.size()
-        println substitutions.size()
-        println substitutions
         return substitutions
     }
 
@@ -42,8 +32,6 @@ class SubstitutionService {
         User user = User.findByUsername(username)
         substitutions = Substitution.findAllByActingPerson(user, params)
         count = substitutions.size()
-        println substitutions.size()
-        println substitutions
         return substitutions
     }
 
@@ -52,8 +40,6 @@ class SubstitutionService {
         User user = User.findByUsername(username)
         substitutions = Substitution.findAllByReplacedPersonOrActingPerson(user, user, params)
         count = substitutions.size()
-        println substitutions.size()
-        println substitutions
         return substitutions
     }
 }
