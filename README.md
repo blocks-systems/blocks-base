@@ -1,2 +1,2 @@
 # blocks-base
-Projects for base entitties
+Projects for base entities

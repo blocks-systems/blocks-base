@@ -1,13 +1,15 @@
 package blocks
 
 import grails.plugins.*
-import blocks.signature.listeners.SignatureListener
 
 class BlocksBaseGrailsPlugin extends Plugin {
 
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "3.1.4 > *"
+    def grailsVersion = "3.2.11 > *"
     // resources that are excluded from plugin packaging
+    def pluginExcludes = [
+        "grails-app/views/error.gsp"
+    ]
 
     // TODO Fill in these fields
     def title = "Blocks Base" // Headline display name of the plugin
@@ -24,7 +26,7 @@ Brief summary/description of the plugin.
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
 //    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
@@ -48,7 +50,7 @@ Brief summary/description of the plugin.
     }
 
     void doWithApplicationContext() {
-            /*grailsApplication.mainContext.eventTriggeringInterceptor.datastores.each { k, datastore ->
+        /*grailsApplication.mainContext.eventTriggeringInterceptor.datastores.each { k, datastore ->
             def signatureListener = new SignatureListener(datastore)
             signatureListener.counterService = applicationContext.counterService
             applicationContext.addApplicationListener(signatureListener)
