@@ -18,6 +18,7 @@ class User extends BaseEntity {
     String username
     String password
     String email
+    String phoneNo
     String firstName
     String lastName
     boolean enabled = true
@@ -40,6 +41,7 @@ class User extends BaseEntity {
         username blank: false, unique: true
         password blank: false
         email email: true, blank: false
+        phoneNo blank: true, nullable: true
         firstName blank: false, nullable: true
         lastName blank: false, nullable: true
         passwordExpire nullable: true
