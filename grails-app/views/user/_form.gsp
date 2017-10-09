@@ -35,12 +35,11 @@
 </div>
 <sec:ifAnyGranted roles="ROLE_ADMIN">
 	<div class="form-group col-lg-12">
-		<blocks:select id="groups" name="groups" multiple="multiple"
-			hideShow="${true}"
-			error="${hasErrors(bean:user, field:'groups', 'has-error')}"
-			labelCode="role.label" from="${Role.list()}" optionKey="id"
-			value="${user?.groups*.id}" optionValue="name"
-			class="selectable many-to-many" />
+		<blocks:select id="recipients" name="coach" labelCode="recipients" hideShow="${true}"
+		create="recipients" from="${blocks.auth.User.list()}" multiple="multiple" optionKey="id"
+		error="${hasErrors(bean:baseMessage, field:'recipients', 'has-error')}"
+		value="${baseMessage?.recipients*.id}" class="selectable many-to-many"
+		readOnly="${readOnly}" />
 
 		<blocks:select id="roles" name="roles" multiple="multiple"
 			hideShow="${true}"

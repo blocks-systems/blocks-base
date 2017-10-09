@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="layout" content="devoops">
+<meta name="layout" content="adminlte">
 <g:set var="entityName"
 	value="${message(code: 'substitution.label', default: 'Substitution')}" />
 <title><g:message code="default.create.label"

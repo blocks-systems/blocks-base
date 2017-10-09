@@ -2,7 +2,7 @@
 
 <head>
 <title><g:message code='spring.security.ui.changePassword.title' /></title>
-<meta name='layout' content='devoops' />
+<meta name='layout' content='adminlte' />
 </head>
 
 <body>

@@ -4,7 +4,7 @@
 <html>
 
 <head>
-<meta name='layout' content='devoops' />
+<meta name='layout' content='adminlte' />
 <title><g:message code='spring.security.ui.register.title' /></title>
 </head>
 

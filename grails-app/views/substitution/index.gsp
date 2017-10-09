@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-<meta name="layout" content="devoops">
+<meta name="layout" content="adminlte">
 <g:set var="entityName"
 	value="${message(code: 'substitution.label', default: 'Substitution')}" />
 <title><g:message code="substitution.list" Default="Substitutions list" /></title>
