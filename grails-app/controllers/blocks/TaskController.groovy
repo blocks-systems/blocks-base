@@ -1,6 +1,10 @@
 package blocks
 
+import blocks.auth.User
 import grails.converters.JSON
+import grails.plugin.springsecurity.userdetails.GrailsUser
+import org.apache.commons.logging.LogFactory
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import static org.springframework.http.HttpStatus.*
@@ -8,6 +12,8 @@ import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class TaskController {
+
+    private static final log = LogFactory.getLog(this)
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -100,7 +106,7 @@ class TaskController {
 
     def ajaxCreate() {
         render template: 'form',
-                model: [event:new Task(params)],
+                model: [task:new Task(params)],
                 contentType: 'text/plain'
     }
 
@@ -121,13 +127,16 @@ class TaskController {
             return
         }
 
+        task.user = getCurrentUser()
+
         def ajaxResponse = [:]
 
         if (task.hasErrors()) {
             def errors = new ArrayList<String>();
             for (fieldErrors in task.errors) {
                 for (error in fieldErrors.allErrors) {
-                    errors.add(messageSource.getMessage(error, RequestContextUtils.getLocale(request)))
+                    //errors.add(messageSource.getMessage(error, RequestContextUtils.getLocale(request)))
+                    errors.add(error.toString())
                 }
             }
             ajaxResponse = ['success': false, 'errors': errors]
@@ -164,9 +173,10 @@ class TaskController {
 
         if (task.hasErrors()) {
             def errors = new ArrayList<String>();
-            for (fieldErrors in t.errors) {
-                for (error in fieldErrors.allEaskrrors) {
-                    errors.add(messageSource.getMessage(error, RequestContextUtils.getLocale(request)))
+            for (fieldErrors in task.errors) {
+                for (error in fieldErrors.allErrors) {
+                    errors.add(error.toString())
+                    //errors.add(messageSource.getMessage(error, RequestContextUtils.getLocale(request)))
                 }
             }
             ajaxResponse = ['success': false, 'errors': errors]
@@ -191,5 +201,10 @@ class TaskController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    def getCurrentUser() {
+        GrailsUser user = (GrailsUser) SecurityContextHolder.context.authentication.principal
+        return User.findById(user.id)
     }
 }

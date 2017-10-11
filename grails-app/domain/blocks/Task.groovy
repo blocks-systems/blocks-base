@@ -39,4 +39,9 @@ class Task extends BaseEntity {
         id generator: 'sequence', params:[sequence:'task_seq']
         description type: 'text'
     }
+
+    @Override
+    String toString() {
+        title
+    }
 }
