@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="layout" content="adminlte">
-<g:set var="entityName"
-	value="${message(code: 'user')}" />
-<title><g:message code="default.user.label" /></title>
+	<meta name="layout" content="adminlte">
+	<g:set var="entityName"
+		value="${message(code: 'user')}" />
+	<title><g:message code="default.user.label" /></title>
 </head>
 <body>
 	<div class="row">
@@ -23,7 +23,7 @@
 
 	<div class="row">
 		<div class="col-xs-12 col-sm-12">
-			<div class="box">
+			<div class="box box-primary">
 				<div class="box-header">
 					<div class="box-name">
 						<i class="fa fa-user"></i> <span><g:message
@@ -32,21 +32,16 @@
 					%{--<div class="box-icons">
 						<blocks:iconAuditedFields bean="${user}" />
 					</div>--}%
-					<div class="no-move"></div>
 				</div>
-				<div class="box-content">
-
-					<h4 class="page-header">
-						<g:message code="default.user.label" />
-					</h4>
-					<g:if test="${flash.message}">
-						<bootstrap:alert class="alert-info">
-							${flash.message}
-						</bootstrap:alert>
-					</g:if>
-					<g:hasErrors bean="${user}">
-						<blocks:beanErrors bean="${user}" />
-					</g:hasErrors>
+				<g:if test="${flash.message}">
+					<bootstrap:alert class="alert-info">
+						${flash.message}
+					</bootstrap:alert>
+				</g:if>
+				<g:hasErrors bean="${user}">
+					<blocks:beanErrors bean="${user}" />
+				</g:hasErrors>
+				<div class="box-body">
 					<g:form class="form-horizontal" role="form" action="update" method="POST">
 						<sec:ifAnyGranted roles="ROLE_ADMIN">
 							<g:hiddenField name='id' value='${id}' />

@@ -15,11 +15,11 @@ class UserController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userInstanceCount: User.count()]
+        respond User.list(params), model:[userCount: User.count()]
     }
 
-    def show(User userInstance) {
-        respond userInstance
+    def show(User user) {
+        respond user
     }
 
     def create() {
@@ -27,37 +27,37 @@ class UserController {
     }
 
     @Transactional
-    def save(User userInstance) {
-        if (userInstance == null) {
+    def save(User user) {
+        if (user == null) {
             notFound()
             return
         }
 
-        if (userInstance.hasErrors()) {
-            respond userInstance.errors, view:'create'
+        if (user.hasErrors()) {
+            respond user.errors, view:'create'
             return
         }
 
-        userInstance.save flush:true
+        user.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user', default: 'User'), userInstance])
-                redirect userInstance
+                flash.message = message(code: 'default.created.message', args: [message(code: 'user', default: 'User'), user])
+                redirect user
             }
-            '*' { respond userInstance, [status: CREATED] }
+            '*' { respond user, [status: CREATED] }
         }
     }
 
-    def edit(User userInstance) {
-        if (userInstance == null) {
+    def edit(User user) {
+        if (user == null) {
             notFound()
             return
         }
         final RegisterCommand command = new RegisterCommand();
-        command.mapFromEntity(userInstance)
+        command.mapFromEntity(user)
 
-        render view: '/user/edit', model: [id: params.id, userInstance: command]
+        render view: '/user/edit', model: [id: params.id, user: command]
     }
 
     @Transactional
@@ -87,10 +87,10 @@ class UserController {
     }
 
     @Transactional
-    def delete(User userInstance) {
+    def delete(User user) {
         User.withTransaction { status ->
             try {
-                userInstance.delete()
+                user.delete()
                 render message(code: 'default.records.deleted',  args: [message(code: 'users')])
             } catch (Exception ex) {
                 status.setRollbackOnly();
@@ -101,17 +101,17 @@ class UserController {
     }
 
     @Transactional
-    def unlock(User userInstance) {
+    def unlock(User user) {
 
-        if (userInstance == null) {
+        if (user == null) {
             notFound()
             return
         }
 
-        userInstance.lastWrongAttempt = null
-        userInstance.wrongAttempts = 0
+        user.lastWrongAttempt = null
+        user.wrongAttempts = 0
 
-        userInstance.save(flush : true)
+        user.save(flush : true)
 
         flash.message = message(code: 'user.unlock.message')
         redirect action:"index", method:"GET"
@@ -160,8 +160,8 @@ class UserController {
         }
     }
 
-    def findById(User userInstance) {
-        def result = [id: userInstance.id, text: userInstance.toString()]
+    def findById(User user) {
+        def result = [id: user.id, text: user.toString()]
         render result as JSON
     }
 

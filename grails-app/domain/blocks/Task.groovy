@@ -40,6 +40,18 @@ class Task extends BaseEntity {
         description type: 'text'
     }
 
+    Integer getRemainingDays() {
+         dueDate - new Date()
+    }
+
+    String getRemainingSpan() {
+        if (dueDate) {
+            return getRemainingDays().toString()
+        } else {
+            return "---"
+        }
+    }
+
     @Override
     String toString() {
         title

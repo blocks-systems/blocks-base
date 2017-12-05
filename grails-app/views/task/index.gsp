@@ -1,4 +1,3 @@
-<%@ page import="blocks.Task"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,99 +50,16 @@
                 <div class="box-body table-responsive no-padding">
                 <ul class="todo-list">
                     <g:each in="${taskList}" var="task">
-                        <g:render template="taskListElement" bean="${task}" />
+                        <g:render template="taskListElement" bean="${task}" var="task" />
                     </g:each>
-                    <li>
-                        <!-- drag handle -->
-                        <span class="handle">
-                            <i class="fa fa-ellipsis-v"></i>
-                            <i class="fa fa-ellipsis-v"></i>
-                        </span>
-                        <!-- checkbox -->
-                        <input type="checkbox" value="">
-                        <!-- todo text -->
-                        <span class="text">Design a nice theme</span>
-                        <!-- Emphasis label -->
-                        <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-                        <!-- General tools such as edit or delete-->
-                        <div class="tools">
-                            <i class="fa fa-edit"></i>
-                            <i class="fa fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="handle">
-                            <i class="fa fa-ellipsis-v"></i>
-                            <i class="fa fa-ellipsis-v"></i>
-                        </span>
-                        <input type="checkbox" value="">
-                        <span class="text">Make the theme responsive</span>
-                        <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                        <div class="tools">
-                            <i class="fa fa-edit"></i>
-                            <i class="fa fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="handle">
-                            <i class="fa fa-ellipsis-v"></i>
-                            <i class="fa fa-ellipsis-v"></i>
-                        </span>
-                        <input type="checkbox" value="">
-                        <span class="text">Let theme shine like a star</span>
-                        <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-                        <div class="tools">
-                            <i class="fa fa-edit"></i>
-                            <i class="fa fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="handle">
-                            <i class="fa fa-ellipsis-v"></i>
-                            <i class="fa fa-ellipsis-v"></i>
-                        </span>
-                        <input type="checkbox" value="">
-                        <span class="text">Let theme shine like a star</span>
-                        <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                        <div class="tools">
-                            <i class="fa fa-edit"></i>
-                            <i class="fa fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="handle">
-                            <i class="fa fa-ellipsis-v"></i>
-                            <i class="fa fa-ellipsis-v"></i>
-                        </span>
-                        <input type="checkbox" value="">
-                        <span class="text">Check your messages and notifications</span>
-                        <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                        <div class="tools">
-                            <i class="fa fa-edit"></i>
-                            <i class="fa fa-trash-o"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="handle">
-                            <i class="fa fa-ellipsis-v"></i>
-                            <i class="fa fa-ellipsis-v"></i>
-                        </span>
-                        <input type="checkbox" value="">
-                        <span class="text">Let theme shine like a star</span>
-                        <small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-                        <div class="tools">
-                            <i class="fa fa-edit"></i>
-                            <i class="fa fa-trash-o"></i>
-                        </div>
-                    </li>
                 </ul>
                     <g:render contextPath="/templates" template="modalDelete"></g:render>
                 </div>
                 <div class="box-footer">
 
-                    <div class="pagination">
+                    %{--<div class="pagination">
                         <g:paginate total="${taskListCount ?: 0}" />
-                    </div>
+                    </div>--}%
                 </div>
             </div>
             <!-- /.box -->
@@ -154,10 +70,38 @@
     $('.todo-list').todoList({
         onCheck  : function () {
             window.console.log($(this), 'The element has been checked');
+            var id = $(this).data('id');
+            $.ajax({
+                type: 'POST',
+                url: "/wazon-app/task/done",
+                data: {id: id},
+                success: function() {
+                    location.reload();
+                }
+            });
         },
         onUnCheck: function () {
             window.console.log($(this), 'The element has been unchecked');
+            var id = $(this).data('id');
+            $.ajax({
+                type: 'POST',
+                url: "/wazon-app/task/undone",
+                data: {id: id},
+                success: function() {
+                    location.reload();
+                }
+            });
         }
+    });
+    $(".task-delete").on('click', function (event) {
+        var id = $(this).data('id');
+        $.ajax({
+            type: 'DELETE',
+            url: "/wazon-app/task/delete/" + id,
+            success: function() {
+                location.reload();
+            }
+        });
     });
 </g:javascript>
 

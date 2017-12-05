@@ -26,29 +26,24 @@ $(function () {
 	<div class="row">
 		<div id="list-actIdUser" class="content scaffold-list" role="main">
 			<div class="col-xs-12">
-				<div class="box">
+				<div class="box box-primary">
 					<div class="box-header">
-						<div class="box-name">
-							<i class="fa fa-users"></i> <span><g:message
-									code="default.users.label" /></span>
-						</div>
-						<div class="box-icons"></div>
-						<div class="no-move"></div>
+						<i class="fa fa-users"></i> <span><g:message
+							code="default.users.label" /></span>
 					</div>
-					<div class="box-content no-padding">
-						<g:if test="${flash.message}">
-							<bootstrap:alert class="alert-info">
-								${flash.message}
-							</bootstrap:alert>
-						</g:if>
-						<g:if test="${flash.error}">
-							<bootstrap:alert class="alert-danger">
-								${flash.error}
-							</bootstrap:alert>
-						</g:if>
-						<table
-							class="table table-bordered table-striped table-hover table-heading table-datatable"
-							id="datatable-1">
+					<g:if test="${flash.message}">
+						<bootstrap:alert class="alert-info">
+							${flash.message}
+						</bootstrap:alert>
+					</g:if>
+					<g:if test="${flash.error}">
+						<bootstrap:alert class="alert-danger">
+							${flash.error}
+						</bootstrap:alert>
+					</g:if>
+					<div class="box-body table-responsive no-padding">
+
+						<table class="table table-hover" id="datatable-1">
 							<thead>
 								<tr>
 
@@ -118,31 +113,13 @@ $(function () {
 									</tr>
 								</g:each>
 							</tbody>
-							<tfoot>
-								<tr>
-
-									<g:sortableColumn property="id"
-										title="${message(code: 'user.id.label')}" />
-
-									<g:sortableColumn property="username"
-										title="${message(code: 'user.username.label')}" />
-
-									<g:sortableColumn property="firstName"
-										title="${message(code: 'user.firstName.label')}" />
-
-									<g:sortableColumn property="lastName"
-										title="${message(code: 'user.lastName.label')}" />
-
-									<th><g:message code="user.enabled.label" /></th>
-
-									<th><g:message code="user.locked.label" /></th>
-									<th />
-								</tr>
-							</tfoot>
 						</table>
 
+
+					</div>
+					<div class="box-footer">
 						<div class="pagination">
-							<g:paginate total="${userInstanceCount ?: 0}" />
+							<g:paginate total="${userCount ?: 0}" />
 						</div>
 					</div>
 				</div>

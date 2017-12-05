@@ -13,13 +13,18 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class TaskController {
 
+    def taskService
+
     private static final log = LogFactory.getLog(this)
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Task.list(params), model:[taskCount: Task.count()]
+        def taskList = taskService.getTasksforLoggedUser([:])
+        log.debug(taskList)
+        respond taskList, model:[taskCount: taskList.size()]
+        //respond Task.list(params), model:[taskCount: Task.count()]
     }
 
     def show(Task task) {
@@ -27,7 +32,9 @@ class TaskController {
     }
 
     def create() {
-        respond new Task(params)
+        Task task = new Task(params)
+        task.user = task.user ?: taskService.currentUser
+        respond task
     }
 
     @Transactional
@@ -37,6 +44,8 @@ class TaskController {
             notFound()
             return
         }
+
+        task.user = task.user ?: taskService.currentUser
 
         if (task.hasErrors()) {
             transactionStatus.setRollbackOnly()
@@ -66,6 +75,8 @@ class TaskController {
             notFound()
             return
         }
+
+        task.user = task.user ?: taskService.currentUser
 
         if (task.hasErrors()) {
             transactionStatus.setRollbackOnly()
@@ -105,8 +116,10 @@ class TaskController {
     }
 
     def ajaxCreate() {
+        Task task = new Task(params)
+        task.user = task.user ?: taskService.currentUser
         render template: 'form',
-                model: [task:new Task(params)],
+                model: [task: task],
                 contentType: 'text/plain'
     }
 
@@ -115,11 +128,13 @@ class TaskController {
             notFound()
             return
         }
+        task.user = task.user ?: taskService.currentUser
         render template: 'form',
                 model: [task:task],
                 contentType: 'text/plain'
     }
 
+    @Transactional
     def ajaxSave(Task task) {
         log.debug(task)
         if (task == null) {
@@ -127,7 +142,7 @@ class TaskController {
             return
         }
 
-        task.user = getCurrentUser()
+        task.user = task.user ?: taskService.currentUser
 
         def ajaxResponse = [:]
 
@@ -168,6 +183,7 @@ class TaskController {
         task.description = params.description
         task.priority = params.prority
         task.done = params.done
+        task.user = task.user ?: taskService.currentUser
 
         def ajaxResponse = [:]
 
@@ -193,6 +209,38 @@ class TaskController {
         render ajaxResponse as JSON
     }
 
+    @Transactional
+    def done() {
+        log.debug(params)
+        if (params.id == null) {
+            notFound()
+            return
+        }
+
+        Task task = Task.findById(params.id)
+        task.done = true
+
+        task.save flush:true
+        flash.message = message(code: 'default.saved.message', args: [message(code: 'task', default: 'task'), task])
+        redirect action: "index", method: "GET"
+    }
+
+    @Transactional
+    def undone() {
+        log.debug(params)
+        if (params.id == null) {
+            notFound()
+            return
+        }
+
+        Task task = Task.findById(params.id)
+        task.done = false
+
+        task.save flush:true
+        flash.message = message(code: 'default.saved.message', args: [message(code: 'task', default: 'task'), task])
+        redirect action: "index", method: "GET"
+    }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {
@@ -201,10 +249,5 @@ class TaskController {
             }
             '*'{ render status: NOT_FOUND }
         }
-    }
-
-    def getCurrentUser() {
-        GrailsUser user = (GrailsUser) SecurityContextHolder.context.authentication.principal
-        return User.findById(user.id)
     }
 }
