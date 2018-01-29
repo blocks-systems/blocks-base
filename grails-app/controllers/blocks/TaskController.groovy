@@ -23,8 +23,7 @@ class TaskController {
         params.max = Math.min(max ?: 10, 100)
         def taskList = taskService.getTasksforLoggedUser([:])
         log.debug(taskList)
-        respond taskList, model:[taskCount: taskList.size()]
-        //respond Task.list(params), model:[taskCount: Task.count()]
+        respond taskList, model:[taskCount: taskList?.size()]
     }
 
     def show(Task task) {
@@ -150,7 +149,6 @@ class TaskController {
             def errors = new ArrayList<String>();
             for (fieldErrors in task.errors) {
                 for (error in fieldErrors.allErrors) {
-                    //errors.add(messageSource.getMessage(error, RequestContextUtils.getLocale(request)))
                     errors.add(error.toString())
                 }
             }
@@ -178,7 +176,6 @@ class TaskController {
         }
 
         Task task = Task.findById(params.id)
-        //event.eventDate = new Date().parse("yyyy-MM-dd", params.eventdate)
         task.title = params.title
         task.description = params.description
         task.priority = params.prority
@@ -192,7 +189,6 @@ class TaskController {
             for (fieldErrors in task.errors) {
                 for (error in fieldErrors.allErrors) {
                     errors.add(error.toString())
-                    //errors.add(messageSource.getMessage(error, RequestContextUtils.getLocale(request)))
                 }
             }
             ajaxResponse = ['success': false, 'errors': errors]
