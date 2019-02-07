@@ -9,6 +9,8 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class NotificationController {
 
+    def notificationService
+
     private static final log = LogFactory.getLog(this)
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
@@ -100,10 +102,12 @@ class NotificationController {
         }
     }
 
+    @Transactional(readOnly = true)
     def unreadedNotifications() {
         def params = [:]
         params.max = 5
-        def notifications = Notification.findAllByIsRead(false, params)
+        def notifications = notificationService.unreadNotifications(params)
+                //Notification.findAllByIsRead(false, params)
         render notifications as JSON
     }
 
